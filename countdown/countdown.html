@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Computer Time Countdown</title>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tsparticles@3.0.3/tsparticles.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tsparticles/preset-fireworks@3.0.0/tsparticles.preset.fireworks.bundle.min.js"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #f0f0f0; /* Background color placeholder */
+            background-image: url('bg.jpg'); /* Background image placeholder */
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        #countdown {
+            font-size: 280px;
+			font-weight: bold;
+            text-align: center;
+            margin-top: 50px;
+            /* color: orchid; */
+            color: violet;
+            animation: flash 1s infinite; /* Flashing animation */
+        }
+
+        #particles-js {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: transparent;
+            z-index: 2;
+        }
+
+        #tsParticles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: transparent;
+            z-index: 2;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="countdown"></div>
+    <div id="particles-js"></div>
+    <div id="tsParticles"></div>
+    <script>
+        // Function to update the countdown
+        function updateCountdown() {
+            // Get the current time
+            const currentTime = new Date();
+
+            // Set the target time (you can adjust this to your desired time)
+            // const targetTime = new Date('January 1, 2024 00:00:00 UTC');
+            const targetTime = new Date('January 3, 2024 13:26:00 UTC');
+
+            // Calculate the time difference
+            const timeDifference = targetTime - currentTime;
+
+            // Calculate days, hours, minutes, and seconds
+            const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+
+            // Update the countdown element
+            const countdownElement = document.getElementById('countdown');
+            countdownElement.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+
+            // Update the countdown element
+            if (timeDifference > 60000) {
+                // document.getElementById('countdown').innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+                document.getElementById('countdown').innerHTML = `${hours}h ${minutes}m ${seconds}s`;
+            } else if (timeDifference >= 0) {
+                document.getElementById('countdown').innerHTML = `${seconds}`;
+                document.getElementById('countdown').style.fontSize = '800px';
+            } else{
+                document.getElementById('countdown').innerHTML = `你好 <br> 2024!`;
+                document.getElementById('countdown').style.fontSize = '300px';
+                triggerFireworkEffect();
+            }
+        }
+
+        // Update the countdown every second
+        setInterval(updateCountdown, 1000);
+
+        // Initial call to set the countdown on page load
+        updateCountdown();
+
+        // Function to trigger the firework effect
+        function triggerFireworkEffect() {
+            particlesJS('particles-js', {
+                particles: {
+                    number: {
+                        value: 100,
+                    },
+                    size: {
+                        value: 3,
+                    },
+                    move: {
+                        enable: true,
+                        speed: 2,
+                    },
+                },
+            });
+        }
+
+        // function triggerFireworkEffect() {
+        //     tsParticles.load("tsparticles", {
+        //         preset: "fireworks",
+        //     });
+        // }
+    </script>
+</body>
+</html>

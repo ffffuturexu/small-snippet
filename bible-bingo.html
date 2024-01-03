@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        .word-card {
+            display: inline-block;
+            margin: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+        }
+
+        .selected-card {
+            background-color: #ffd700; /* Highlight color */
+        }
+
+        #word-display {
+            font-size: 80px;
+            margin: 20px 0;
+        }
+
+        #generate-button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const words = [
+                ['上帝', 'Dio'],
+                ['耶稣', 'Gesù'],
+                ['圣灵', 'Spirito Santo'],
+                ['亚当', 'Adamo'],
+                ['夏娃', 'Eva'],
+                ['亚伯', 'Abele'],
+                ['该隐', 'Caino'],
+                ['诺亚', 'Noè'],
+                ['亚伯拉罕', 'Abramo'],
+                ['摩西', 'Mosè'],
+                ['以撒', 'Isacco'],
+                ['雅各', 'Giacobbe'],
+                ['约瑟', 'Giuseppe'],
+                ['大卫', 'Davide'],
+                ['扫罗', 'Saul'],
+                ['所罗门', 'Salomone'],
+                ['以利亚', 'Elia'],
+                ['约伯', 'Giobbe'],
+                ['马利亚', 'Maria'],
+                ['保罗', 'Paolo'],
+                ['救赎', 'Redenzione'],
+                ['十字架', 'Croce'],
+                ['复活', 'Risurrezione'],
+                ['升天', 'Ascensione'],
+                ['仁爱', 'Amore'],
+                ['喜乐', 'Gioia'],
+                ['和平', 'Pace'],
+                ['忍耐', 'Pazienza'],
+                ['恩慈', 'Benevolenza'],
+                ['良善', 'Bontà'],
+                ['信实', 'Fedeltà'],
+                ['温柔', 'Mansuetudine'],
+                ['节制', 'Autocontrollo'],
+                ['圣经', 'Bibbia'],
+                ['创世记', 'Genesi'],
+                ['出埃及记', 'Esodo'],
+                ['利未记', 'Levitico'],
+                ['民数记', 'Numeri'],
+                ['申命记', 'Deuteronomio'],
+                ['约书亚记', 'Giosuè'],
+                ['士师记', 'Giudici'],
+                ['路得记', 'Rut'],
+                ['撒母耳记上', '1 Samuele'],
+                ['撒母耳记下', '2 Samuele'],
+                ['列王纪上', '1 Re'],
+                ['列王纪下', '2 Re'],
+                ['历代志上', '1 Cronache'],
+                ['历代志下', '2 Cronache'],
+                ['以斯拉记', 'Esdra'],
+                ['尼希米记', 'Neemia'],
+                ['以斯帖记', 'Ester'],
+                ['约伯记', 'Giobbe'],
+                ['诗篇', 'Salmi'],
+                ['箴言', 'Proverbi'],
+                ['传道书', 'Ecclesiaste'],
+                ['雅歌', 'Cantico dei Cantici'],
+                ['以赛亚书', 'Isaia'],
+                ['耶利米书', 'Geremia'],
+                ['耶利米哀歌', 'Lamentazioni'],
+                ['以西结书', 'Ezechiele'],
+                ['但以理书', 'Daniele'],
+                ['何西阿书', 'Osea'],
+                ['约珥书', 'Gioele'],
+                ['阿摩司书', 'Amos'],
+                ['俄巴底亚书', 'Abdia'],
+                ['约拿书', 'Giona'],
+                ['弥迦书', 'Michea'],
+                ['那鸿书', 'Nahum'],
+                ['哈巴谷书', 'Abacuc'],
+                ['西番雅书', 'Sofonia'],
+                ['哈该书', 'Aggeo'],
+                ['撒迦利亚书', 'Zaccaria'],
+                ['玛拉基书', 'Malachia'],
+                ['马太福音', 'Matteo'],
+                ['马可福音', 'Marco'],
+                ['路加福音', 'Luca'],
+                ['约翰福音', 'Giovanni'],
+                ['使徒行传', 'Atti degli Apostoli'],
+                ['罗马书', 'Romani'],
+                ['哥林多前书', '1 Corinzi'],
+                ['哥林多后书', '2 Corinzi'],
+                ['加拉太书', 'Galati'],
+                ['以弗所书', 'Efesini'],
+                ['腓立比书', 'Filippesi'],
+                ['歌罗西书', 'Colossesi'],
+                ['帖撒罗尼迦前书', '1 Tessalonicesi'],
+                ['帖撒罗尼迦后书', '2 Tessalonicesi'],
+                ['提摩太前书', '1 Timoteo'],
+                ['提摩太后书', '2 Timoteo'],
+                ['提多书', 'Lettera a Tito'],
+                ['腓利门书', 'Lettera a Filemone'],
+                ['希伯来书', 'Lettera agli Ebrei'],
+                ['雅各书', 'Lettera di Giacomo'],
+                ['彼得前书', '1 Pietro'],
+                ['彼得后书', '2 Pietro'],
+                ['约翰一书', '1 Giovanni'],
+                ['约翰二书', '2 Giovanni'],
+                ['约翰三书', '3 Giovanni'],
+                ['犹大书', 'Lettura di Giuda'],
+                ['启示录', 'Apocalisse di Giovanni']
+            ];
+
+            const wordDisplay = document.getElementById('word-display');
+            const generateButton = document.getElementById('generate-button');
+            const wordCardsContainer = document.getElementById('word-cards-container');
+            let selectedWordCards = [];
+            let selectedIndexes = [];
+
+            // Create word cards dynamically
+            words.forEach(wordPair => {
+                const wordCard = document.createElement('div');
+                const chineseWord = wordPair[0];
+                const italianWord = wordPair[1];
+
+                wordCard.classList.add('word-card');
+                wordCard.id = `card-${chineseWord}`;
+                wordCard.textContent = `${chineseWord} - ${italianWord}`;
+
+                wordCard.addEventListener('click', function () {
+                    // Highlight the selected card
+                    this.classList.toggle('selected-card');
+                    updateSelectedWordCards();
+                });
+
+                wordCardsContainer.appendChild(wordCard);
+            });
+
+            generateButton.addEventListener('click', function () {
+                randomIndex = Math.floor(Math.random() * words.length);
+                if (selectedIndexes.length === words.length) {
+                    alert('所有词都已经选过了，重新开始吧');
+                    selectedIndexes = [];
+                    selectedWordCards.forEach(wordCard => {
+                        wordCard.classList.remove('selected-card');
+                    });
+                }
+                while (selectedIndexes.includes(randomIndex) && selectedIndexes.length < words.length) {
+                    // console.log('重复了');
+                    randomIndex = Math.floor(Math.random() * words.length);
+                }
+                selectedIndexes.push(randomIndex);
+                const randomWordPair = words[randomIndex];
+                const randomWordChinese = randomWordPair[0];
+                const randomWordItalian = randomWordPair[1];
+
+                // Highlight the selected card
+                const selectedCard = document.getElementById(`card-${randomWordChinese}`);
+                selectedCard.classList.add('selected-card');
+                updateSelectedWordCards();
+
+                wordDisplay.textContent = `${randomWordChinese} - ${randomWordItalian}`;
+            });
+
+            function updateSelectedWordCards() {
+                // Update the array of selected word cards
+                selectedWordCards = Array.from(wordCardsContainer.querySelectorAll('.selected-card'));
+            }
+        });
+    </script>
+    <title>Random Word Generator</title>
+</head>
+<body>
+    <div id="word-display">点击按钮随机选择一个词</div>
+    <div id="word-cards-container"></div>
+    <button id="generate-button">点我选词</button>
+</body>
+</html>
